@@ -218,6 +218,9 @@ def load_clean_data(filepath=None):
     df = df.dropna(subset=["age", "hhincome", "educ"])
     df = df.reset_index(drop=True)
 
+    # ── 10. EXPORT CLEANED DATA ──────────────────────────────────────────────
+    df.to_csv(os.path.join(os.path.dirname(__file__), "cleaned_data.csv"), index=False)
+
     return df
 
 

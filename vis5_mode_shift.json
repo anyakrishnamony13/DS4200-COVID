@@ -1,0 +1,290 @@
+[
+  {
+    "period": "Before COVID",
+    "mode": "Private Vehicle",
+    "tier": "Never",
+    "percent": 7.42
+  },
+  {
+    "period": "Before COVID",
+    "mode": "Private Vehicle",
+    "tier": "Rarely",
+    "percent": 8.3
+  },
+  {
+    "period": "Before COVID",
+    "mode": "Private Vehicle",
+    "tier": "Sometimes",
+    "percent": 23.04
+  },
+  {
+    "period": "Before COVID",
+    "mode": "Private Vehicle",
+    "tier": "Often",
+    "percent": 61.24
+  },
+  {
+    "period": "During COVID",
+    "mode": "Private Vehicle",
+    "tier": "Never",
+    "percent": 10.69
+  },
+  {
+    "period": "During COVID",
+    "mode": "Private Vehicle",
+    "tier": "Rarely",
+    "percent": 8.36
+  },
+  {
+    "period": "During COVID",
+    "mode": "Private Vehicle",
+    "tier": "Sometimes",
+    "percent": 24.42
+  },
+  {
+    "period": "During COVID",
+    "mode": "Private Vehicle",
+    "tier": "Often",
+    "percent": 56.53
+  },
+  {
+    "period": "Before COVID",
+    "mode": "Ridehail/Taxi",
+    "tier": "Never",
+    "percent": 62.79
+  },
+  {
+    "period": "Before COVID",
+    "mode": "Ridehail/Taxi",
+    "tier": "Rarely",
+    "percent": 31.99
+  },
+  {
+    "period": "Before COVID",
+    "mode": "Ridehail/Taxi",
+    "tier": "Sometimes",
+    "percent": 4.18
+  },
+  {
+    "period": "Before COVID",
+    "mode": "Ridehail/Taxi",
+    "tier": "Often",
+    "percent": 1.04
+  },
+  {
+    "period": "During COVID",
+    "mode": "Ridehail/Taxi",
+    "tier": "Never",
+    "percent": 92.13
+  },
+  {
+    "period": "During COVID",
+    "mode": "Ridehail/Taxi",
+    "tier": "Rarely",
+    "percent": 4.5
+  },
+  {
+    "period": "During COVID",
+    "mode": "Ridehail/Taxi",
+    "tier": "Sometimes",
+    "percent": 2.57
+  },
+  {
+    "period": "During COVID",
+    "mode": "Ridehail/Taxi",
+    "tier": "Often",
+    "percent": 0.8
+  },
+  {
+    "period": "Before COVID",
+    "mode": "Transit",
+    "tier": "Never",
+    "percent": 67.15
+  },
+  {
+    "period": "Before COVID",
+    "mode": "Transit",
+    "tier": "Rarely",
+    "percent": 22.9
+  },
+  {
+    "period": "Before COVID",
+    "mode": "Transit",
+    "tier": "Sometimes",
+    "percent": 6.25
+  },
+  {
+    "period": "Before COVID",
+    "mode": "Transit",
+    "tier": "Often",
+    "percent": 3.7
+  },
+  {
+    "period": "During COVID",
+    "mode": "Transit",
+    "tier": "Never",
+    "percent": 91.71
+  },
+  {
+    "period": "During COVID",
+    "mode": "Transit",
+    "tier": "Rarely",
+    "percent": 3.38
+  },
+  {
+    "period": "During COVID",
+    "mode": "Transit",
+    "tier": "Sometimes",
+    "percent": 2.95
+  },
+  {
+    "period": "During COVID",
+    "mode": "Transit",
+    "tier": "Often",
+    "percent": 1.96
+  },
+  {
+    "period": "Before COVID",
+    "mode": "Personal Bike",
+    "tier": "Never",
+    "percent": 62.43
+  },
+  {
+    "period": "Before COVID",
+    "mode": "Personal Bike",
+    "tier": "Rarely",
+    "percent": 25.2
+  },
+  {
+    "period": "Before COVID",
+    "mode": "Personal Bike",
+    "tier": "Sometimes",
+    "percent": 9.88
+  },
+  {
+    "period": "Before COVID",
+    "mode": "Personal Bike",
+    "tier": "Often",
+    "percent": 2.5
+  },
+  {
+    "period": "During COVID",
+    "mode": "Personal Bike",
+    "tier": "Never",
+    "percent": 77.37
+  },
+  {
+    "period": "During COVID",
+    "mode": "Personal Bike",
+    "tier": "Rarely",
+    "percent": 8.19
+  },
+  {
+    "period": "During COVID",
+    "mode": "Personal Bike",
+    "tier": "Sometimes",
+    "percent": 9.86
+  },
+  {
+    "period": "During COVID",
+    "mode": "Personal Bike",
+    "tier": "Often",
+    "percent": 4.58
+  },
+  {
+    "period": "Before COVID",
+    "mode": "Shared Bike",
+    "tier": "Never",
+    "percent": 88.83
+  },
+  {
+    "period": "Before COVID",
+    "mode": "Shared Bike",
+    "tier": "Rarely",
+    "percent": 7.87
+  },
+  {
+    "period": "Before COVID",
+    "mode": "Shared Bike",
+    "tier": "Sometimes",
+    "percent": 2.28
+  },
+  {
+    "period": "Before COVID",
+    "mode": "Shared Bike",
+    "tier": "Often",
+    "percent": 1.02
+  },
+  {
+    "period": "During COVID",
+    "mode": "Shared Bike",
+    "tier": "Never",
+    "percent": 94.07
+  },
+  {
+    "period": "During COVID",
+    "mode": "Shared Bike",
+    "tier": "Rarely",
+    "percent": 2.25
+  },
+  {
+    "period": "During COVID",
+    "mode": "Shared Bike",
+    "tier": "Sometimes",
+    "percent": 2.43
+  },
+  {
+    "period": "During COVID",
+    "mode": "Shared Bike",
+    "tier": "Often",
+    "percent": 1.25
+  },
+  {
+    "period": "Before COVID",
+    "mode": "Walking",
+    "tier": "Never",
+    "percent": 21.35
+  },
+  {
+    "period": "Before COVID",
+    "mode": "Walking",
+    "tier": "Rarely",
+    "percent": 31.12
+  },
+  {
+    "period": "Before COVID",
+    "mode": "Walking",
+    "tier": "Sometimes",
+    "percent": 25.3
+  },
+  {
+    "period": "Before COVID",
+    "mode": "Walking",
+    "tier": "Often",
+    "percent": 22.22
+  },
+  {
+    "period": "During COVID",
+    "mode": "Walking",
+    "tier": "Never",
+    "percent": 34.88
+  },
+  {
+    "period": "During COVID",
+    "mode": "Walking",
+    "tier": "Rarely",
+    "percent": 11.92
+  },
+  {
+    "period": "During COVID",
+    "mode": "Walking",
+    "tier": "Sometimes",
+    "percent": 23.3
+  },
+  {
+    "period": "During COVID",
+    "mode": "Walking",
+    "tier": "Often",
+    "percent": 29.9
+  }
+]
