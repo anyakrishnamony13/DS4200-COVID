@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@6.1.0"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>* { font-family: 'Inter', sans-serif !important; }</style>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300, "stroke": "#E4EAF0", "strokeWidth": 1}, "axis": {"domainColor": "#D4E0EA", "gridColor": "#EDF1F5", "labelColor": "#8FA8BC", "labelFont": "Inter", "labelFontSize": 11, "labelPadding": 6, "tickColor": "#D4E0EA", "titleColor": "#8FA8BC", "titleFont": "Inter", "titleFontSize": 12, "titlePadding": 10}, "legend": {"labelColor": "#8FA8BC", "labelFont": "Inter", "labelFontSize": 12, "padding": 8, "rowPadding": 6, "symbolSize": 100, "symbolStrokeWidth": 0, "titleColor": "#5A7A94", "titleFont": "Inter", "titleFontSize": 12, "titleFontWeight": "normal"}, "padding": {"top": 20, "right": 160, "bottom": 20, "left": 20}, "title": {"anchor": "start", "color": "#0D1B2A", "font": "Inter", "fontSize": 18, "fontWeight": "bold", "offset": 8, "subtitleColor": "#5A7A94", "subtitleFont": "Inter", "subtitleFontSize": 12, "subtitleLineHeight": 18}}, "data": {"name": "data-c703792e37214a1b1ae169cd594c013e"}, "mark": {"type": "bar", "cornerRadiusBottomLeft": 3, "cornerRadiusBottomRight": 3, "cornerRadiusTopLeft": 3, "cornerRadiusTopRight": 3}, "encoding": {"color": {"field": "direction", "legend": {"labelColor": "#8FA8BC", "labelFont": "Inter", "labelFontSize": 12, "orient": "right", "symbolSize": 100, "symbolStrokeWidth": 0, "title": "Productivity change", "titleColor": "#5A7A94", "titleFont": "Inter", "titleFontSize": 12, "titleFontWeight": "normal"}, "scale": {"domain": ["Increased", "Decreased"], "range": ["#2EC4B6", "#E63946"]}, "type": "nominal"}, "tooltip": [{"field": "jobcat_pre", "title": "Job category", "type": "nominal"}, {"field": "direction", "title": "Direction", "type": "nominal"}, {"field": "pct", "format": ".1f", "title": "% of job category", "type": "quantitative"}, {"field": "count", "title": "Respondents (n)", "type": "quantitative"}], "x": {"axis": {"format": ".0f", "grid": true, "labelPadding": 6, "title": "% reporting productivity change", "titlePadding": 10}, "field": "pct_diverge", "type": "quantitative"}, "y": {"axis": {"labelPadding": 8, "title": "Job category", "titlePadding": 12}, "field": "jobcat_pre", "sort": ["Professional, managerial, or technical", "Clerical or administrative support", "Manufacturing or construction", "Something else", "Sales or service"], "type": "nominal"}}, "height": 260, "title": {"text": "Productivity winners and losers: who thrived working from home?", "subtitle": ["Share of workers reporting increased vs. decreased productivity during COVID, by job category."], "subtitleColor": "#5A7A94"}, "width": 580, "$schema": "https://vega.github.io/schema/vega-lite/v6.1.0.json", "datasets": {"data-c703792e37214a1b1ae169cd594c013e": [{"jobcat_pre": "Clerical or administrative support", "direction": "Decreased", "count": 64, "pct": 43.8, "pct_diverge": -43.8}, {"jobcat_pre": "Clerical or administrative support", "direction": "Increased", "count": 82, "pct": 56.2, "pct_diverge": 56.2}, {"jobcat_pre": "Manufacturing or construction", "direction": "Decreased", "count": 52, "pct": 48.1, "pct_diverge": -48.1}, {"jobcat_pre": "Manufacturing or construction", "direction": "Increased", "count": 56, "pct": 51.9, "pct_diverge": 51.9}, {"jobcat_pre": "Professional, managerial, or technical", "direction": "Decreased", "count": 241, "pct": 37.2, "pct_diverge": -37.2}, {"jobcat_pre": "Professional, managerial, or technical", "direction": "Increased", "count": 406, "pct": 62.8, "pct_diverge": 62.8}, {"jobcat_pre": "Sales or service", "direction": "Decreased", "count": 84, "pct": 58.3, "pct_diverge": -58.3}, {"jobcat_pre": "Sales or service", "direction": "Increased", "count": 60, "pct": 41.7, "pct_diverge": 41.7}, {"jobcat_pre": "Something else", "direction": "Decreased", "count": 98, "pct": 49.5, "pct_diverge": -49.5}, {"jobcat_pre": "Something else", "direction": "Increased", "count": 100, "pct": 50.5, "pct_diverge": 50.5}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+<style>body{margin:16px 24px;}.vega-embed{display:block;}#source-line{font-family:'Inter',sans-serif;font-size:11px;color:#B0C4D4;border-top:1px solid #EDF1F5;padding-top:10px;margin-top:6px;display:table;}</style><p id="source-line">Source: COVID Future Wave 1B Survey, Arizona State University</p>
+</body>
+</html>

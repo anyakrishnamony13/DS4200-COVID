@@ -2,286 +2,265 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>How Transportation Mode Use Shifted Before, During, and After COVID</title>
-  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <title>The great mode migration</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <style>
+    *, *::before, *::after { box-sizing: border-box; }
     body {
-      font-family: Georgia, serif;
-      margin: 32px;
-      color: #222;
+      font-family: 'Inter', sans-serif;
+      margin: 32px 40px;
+      background: #ffffff;
+      color: #0D1B2A;
     }
-
-    h2 {
-      margin-bottom: 4px;
+    .chart-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #0D1B2A;
+      margin: 0 0 5px;
     }
-
-    .subtitle {
-      margin-top: 0;
-      margin-bottom: 6px;
-      color: #555;
-      max-width: 980px;
-      line-height: 1.4;
+    .chart-subtitle {
+      font-size: 12px;
+      color: #5A7A94;
+      margin: 0 0 20px;
+      max-width: 800px;
+      line-height: 1.5;
     }
-
-    /* ── scale-change warning banner ── */
+    .buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    button {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 18px;
+      border: 1.5px solid #E4EAF0;
+      border-radius: 6px;
+      background: #ffffff;
+      color: #5A7A94;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    button:hover {
+      border-color: #4895EF;
+      color: #4895EF;
+    }
+    button.active {
+      background: #4895EF;
+      border-color: #4895EF;
+      color: #ffffff;
+    }
     .scale-warning {
       display: none;
-      background: #fff3cd;
-      border: 1px solid #ffc107;
-      padding: 8px 14px;
-      margin-bottom: 14px;
-      max-width: 980px;
-      font-size: 13px;
-      line-height: 1.4;
+      background: #FFF8EC;
+      border: 1px solid #F4A261;
+      border-radius: 6px;
+      padding: 10px 16px;
+      margin-bottom: 16px;
+      max-width: 800px;
+      font-size: 12px;
+      color: #5A7A94;
+      line-height: 1.5;
     }
-
-    .buttons {
-      margin-bottom: 18px;
-    }
-
-    button {
-      font-family: Georgia, serif;
-      font-size: 14px;
-      padding: 8px 14px;
-      margin-right: 10px;
-      border: 1px solid #bbb;
-      background: white;
-      cursor: pointer;
-    }
-
-    button.active {
-      background: #e8e8e8;
-      font-weight: bold;
-      border-color: #888;
-    }
-
-    button:hover {
-      background: #f5f5f5;
-    }
-
     .tooltip {
-      position: absolute;
+      position: fixed;
       opacity: 0;
-      background: white;
-      border: 1px solid #ccc;
-      padding: 8px 10px;
+      background: #ffffff;
+      border: 1px solid #E4EAF0;
+      border-radius: 6px;
+      padding: 10px 14px;
       pointer-events: none;
-      font-size: 13px;
-      line-height: 1.35;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #0D1B2A;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .source {
+      font-size: 11px;
+      color: #B0C4D4;
+      margin-top: 16px;
+      border-top: 1px solid #EDF1F5;
+      padding-top: 10px;
+      max-width: 840px;
     }
   </style>
 </head>
 <body>
-  <h2>How Transportation Mode Use Shifted Before, During, and After COVID</h2>
-  <p class="subtitle">
-    <strong>Before</strong> and <strong>During</strong> show what share of respondents
-    used each mode at each frequency tier. <strong>Expected After</strong> shows whether
-    respondents expect their use to increase or decrease relative to before COVID.
+  <h2 class="chart-title">The great mode migration: how transportation choices shifted</h2>
+  <p class="chart-subtitle">
+    Toggle between time periods to see how the share of respondents using each
+    transportation mode at each frequency tier changed before, during, and after COVID.
   </p>
 
-  <!-- Warning shown only for Expected After -->
   <div class="scale-warning" id="scaleWarning">
-    ⚠️ <strong>Note:</strong> The "Expected After" view uses a different scale than
-    Before/During. Bars here show <em>expected change relative to before COVID</em>
-    (e.g. "Much less" to "Much more"), not absolute usage frequency.
-    Direct visual comparison with the other two periods should be made cautiously.
+    <strong>Note:</strong> The "Expected After" view uses a different scale.
+    Bars show <em>expected change relative to before COVID</em> (Much less to Much more),
+    not absolute usage frequency. Avoid direct visual comparison with the other periods.
   </div>
 
   <div class="buttons">
     <button id="btn-before" class="active" onclick="updateChart('Before COVID', this)">Before COVID</button>
     <button id="btn-during" onclick="updateChart('During COVID', this)">During COVID</button>
-    <button id="btn-after" onclick="updateChart('Expected After', this)">Expected After</button>
+    <button id="btn-after"  onclick="updateChart('Expected After', this)">Expected After</button>
   </div>
 
-  <svg width="1040" height="560"></svg>
-  <div class="tooltip"></div>
+  <svg id="chart"></svg>
+  <div class="tooltip" id="tooltip"></div>
+  <p class="source">Source: COVID Future Wave 1B Survey, Arizona State University</p>
 
   <script>
-    const rawData = [{"period": "Before COVID", "mode": "Private Vehicle", "tier": "Never", "percent": 24.35}, {"period": "Before COVID", "mode": "Private Vehicle", "tier": "Rarely", "percent": 0.0}, {"period": "Before COVID", "mode": "Private Vehicle", "tier": "Sometimes", "percent": 75.65}, {"period": "Before COVID", "mode": "Private Vehicle", "tier": "Often", "percent": 0.0}, {"period": "During COVID", "mode": "Private Vehicle", "tier": "Never", "percent": 10.69}, {"period": "During COVID", "mode": "Private Vehicle", "tier": "Rarely", "percent": 8.36}, {"period": "During COVID", "mode": "Private Vehicle", "tier": "Sometimes", "percent": 24.42}, {"period": "During COVID", "mode": "Private Vehicle", "tier": "Often", "percent": 56.53}, {"period": "Expected After", "mode": "Private Vehicle", "tier": "Much less", "percent": 5.1}, {"period": "Expected After", "mode": "Private Vehicle", "tier": "Somewhat less", "percent": 7.16}, {"period": "Expected After", "mode": "Private Vehicle", "tier": "About the same", "percent": 66.35}, {"period": "Expected After", "mode": "Private Vehicle", "tier": "Somewhat more", "percent": 11.61}, {"period": "Expected After", "mode": "Private Vehicle", "tier": "Much more", "percent": 9.78}, {"period": "Before COVID", "mode": "Ridehail/Taxi", "tier": "Never", "percent": 93.76}, {"period": "Before COVID", "mode": "Ridehail/Taxi", "tier": "Rarely", "percent": 0.0}, {"period": "Before COVID", "mode": "Ridehail/Taxi", "tier": "Sometimes", "percent": 6.24}, {"period": "Before COVID", "mode": "Ridehail/Taxi", "tier": "Often", "percent": 0.0}, {"period": "During COVID", "mode": "Ridehail/Taxi", "tier": "Never", "percent": 92.13}, {"period": "During COVID", "mode": "Ridehail/Taxi", "tier": "Rarely", "percent": 4.5}, {"period": "During COVID", "mode": "Ridehail/Taxi", "tier": "Sometimes", "percent": 2.57}, {"period": "During COVID", "mode": "Ridehail/Taxi", "tier": "Often", "percent": 0.8}, {"period": "Expected After", "mode": "Ridehail/Taxi", "tier": "Much less", "percent": 6.28}, {"period": "Expected After", "mode": "Ridehail/Taxi", "tier": "Somewhat less", "percent": 4.76}, {"period": "Expected After", "mode": "Ridehail/Taxi", "tier": "About the same", "percent": 80.76}, {"period": "Expected After", "mode": "Ridehail/Taxi", "tier": "Somewhat more", "percent": 6.51}, {"period": "Expected After", "mode": "Ridehail/Taxi", "tier": "Much more", "percent": 1.69}, {"period": "Before COVID", "mode": "Transit", "tier": "Never", "percent": 91.49}, {"period": "Before COVID", "mode": "Transit", "tier": "Rarely", "percent": 0.0}, {"period": "Before COVID", "mode": "Transit", "tier": "Sometimes", "percent": 8.51}, {"period": "Before COVID", "mode": "Transit", "tier": "Often", "percent": 0.0}, {"period": "During COVID", "mode": "Transit", "tier": "Never", "percent": 91.71}, {"period": "During COVID", "mode": "Transit", "tier": "Rarely", "percent": 3.38}, {"period": "During COVID", "mode": "Transit", "tier": "Sometimes", "percent": 2.95}, {"period": "During COVID", "mode": "Transit", "tier": "Often", "percent": 1.96}, {"period": "Expected After", "mode": "Transit", "tier": "Much less", "percent": 6.72}, {"period": "Expected After", "mode": "Transit", "tier": "Somewhat less", "percent": 4.66}, {"period": "Expected After", "mode": "Transit", "tier": "About the same", "percent": 80.94}, {"period": "Expected After", "mode": "Transit", "tier": "Somewhat more", "percent": 5.69}, {"period": "Expected After", "mode": "Transit", "tier": "Much more", "percent": 1.99}, {"period": "Before COVID", "mode": "Personal Bike", "tier": "Never", "percent": 86.34}, {"period": "Before COVID", "mode": "Personal Bike", "tier": "Rarely", "percent": 0.0}, {"period": "Before COVID", "mode": "Personal Bike", "tier": "Sometimes", "percent": 13.66}, {"period": "Before COVID", "mode": "Personal Bike", "tier": "Often", "percent": 0.0}, {"period": "During COVID", "mode": "Personal Bike", "tier": "Never", "percent": 77.37}, {"period": "During COVID", "mode": "Personal Bike", "tier": "Rarely", "percent": 8.19}, {"period": "During COVID", "mode": "Personal Bike", "tier": "Sometimes", "percent": 9.86}, {"period": "During COVID", "mode": "Personal Bike", "tier": "Often", "percent": 4.58}, {"period": "Expected After", "mode": "Personal Bike", "tier": "Much less", "percent": 2.0}, {"period": "Expected After", "mode": "Personal Bike", "tier": "Somewhat less", "percent": 2.63}, {"period": "Expected After", "mode": "Personal Bike", "tier": "About the same", "percent": 81.53}, {"period": "Expected After", "mode": "Personal Bike", "tier": "Somewhat more", "percent": 10.96}, {"period": "Expected After", "mode": "Personal Bike", "tier": "Much more", "percent": 2.89}, {"period": "Before COVID", "mode": "Shared Bike", "tier": "Never", "percent": 97.5}, {"period": "Before COVID", "mode": "Shared Bike", "tier": "Rarely", "percent": 0.0}, {"period": "Before COVID", "mode": "Shared Bike", "tier": "Sometimes", "percent": 2.5}, {"period": "Before COVID", "mode": "Shared Bike", "tier": "Often", "percent": 0.0}, {"period": "During COVID", "mode": "Shared Bike", "tier": "Never", "percent": 94.07}, {"period": "During COVID", "mode": "Shared Bike", "tier": "Rarely", "percent": 2.25}, {"period": "During COVID", "mode": "Shared Bike", "tier": "Sometimes", "percent": 2.43}, {"period": "During COVID", "mode": "Shared Bike", "tier": "Often", "percent": 1.25}, {"period": "Expected After", "mode": "Shared Bike", "tier": "Much less", "percent": 1.76}, {"period": "Expected After", "mode": "Shared Bike", "tier": "Somewhat less", "percent": 1.23}, {"period": "Expected After", "mode": "Shared Bike", "tier": "About the same", "percent": 91.58}, {"period": "Expected After", "mode": "Shared Bike", "tier": "Somewhat more", "percent": 3.93}, {"period": "Expected After", "mode": "Shared Bike", "tier": "Much more", "percent": 1.51}, {"period": "Before COVID", "mode": "Walking", "tier": "Never", "percent": 45.76}, {"period": "Before COVID", "mode": "Walking", "tier": "Rarely", "percent": 0.0}, {"period": "Before COVID", "mode": "Walking", "tier": "Sometimes", "percent": 54.24}, {"period": "Before COVID", "mode": "Walking", "tier": "Often", "percent": 0.0}, {"period": "During COVID", "mode": "Walking", "tier": "Never", "percent": 34.88}, {"period": "During COVID", "mode": "Walking", "tier": "Rarely", "percent": 11.92}, {"period": "During COVID", "mode": "Walking", "tier": "Sometimes", "percent": 23.3}, {"period": "During COVID", "mode": "Walking", "tier": "Often", "percent": 29.9}, {"period": "Expected After", "mode": "Walking", "tier": "Much less", "percent": 3.03}, {"period": "Expected After", "mode": "Walking", "tier": "Somewhat less", "percent": 3.6}, {"period": "Expected After", "mode": "Walking", "tier": "About the same", "percent": 64.68}, {"period": "Expected After", "mode": "Walking", "tier": "Somewhat more", "percent": 19.86}, {"period": "Expected After", "mode": "Walking", "tier": "Much more", "percent": 8.84}];
+    const rawData = [{"period": "Before COVID", "mode": "Private Vehicle", "tier": "Never", "percent": 7.42}, {"period": "Before COVID", "mode": "Private Vehicle", "tier": "Rarely", "percent": 8.3}, {"period": "Before COVID", "mode": "Private Vehicle", "tier": "Sometimes", "percent": 23.04}, {"period": "Before COVID", "mode": "Private Vehicle", "tier": "Often", "percent": 61.24}, {"period": "During COVID", "mode": "Private Vehicle", "tier": "Never", "percent": 10.69}, {"period": "During COVID", "mode": "Private Vehicle", "tier": "Rarely", "percent": 8.36}, {"period": "During COVID", "mode": "Private Vehicle", "tier": "Sometimes", "percent": 24.42}, {"period": "During COVID", "mode": "Private Vehicle", "tier": "Often", "percent": 56.53}, {"period": "Expected After", "mode": "Private Vehicle", "tier": "Much less", "percent": 5.1}, {"period": "Expected After", "mode": "Private Vehicle", "tier": "Somewhat less", "percent": 7.16}, {"period": "Expected After", "mode": "Private Vehicle", "tier": "About the same", "percent": 66.35}, {"period": "Expected After", "mode": "Private Vehicle", "tier": "Somewhat more", "percent": 11.61}, {"period": "Expected After", "mode": "Private Vehicle", "tier": "Much more", "percent": 9.78}, {"period": "Before COVID", "mode": "Ridehail/Taxi", "tier": "Never", "percent": 62.79}, {"period": "Before COVID", "mode": "Ridehail/Taxi", "tier": "Rarely", "percent": 31.99}, {"period": "Before COVID", "mode": "Ridehail/Taxi", "tier": "Sometimes", "percent": 4.18}, {"period": "Before COVID", "mode": "Ridehail/Taxi", "tier": "Often", "percent": 1.04}, {"period": "During COVID", "mode": "Ridehail/Taxi", "tier": "Never", "percent": 92.13}, {"period": "During COVID", "mode": "Ridehail/Taxi", "tier": "Rarely", "percent": 4.5}, {"period": "During COVID", "mode": "Ridehail/Taxi", "tier": "Sometimes", "percent": 2.57}, {"period": "During COVID", "mode": "Ridehail/Taxi", "tier": "Often", "percent": 0.8}, {"period": "Expected After", "mode": "Ridehail/Taxi", "tier": "Much less", "percent": 6.28}, {"period": "Expected After", "mode": "Ridehail/Taxi", "tier": "Somewhat less", "percent": 4.76}, {"period": "Expected After", "mode": "Ridehail/Taxi", "tier": "About the same", "percent": 80.76}, {"period": "Expected After", "mode": "Ridehail/Taxi", "tier": "Somewhat more", "percent": 6.51}, {"period": "Expected After", "mode": "Ridehail/Taxi", "tier": "Much more", "percent": 1.69}, {"period": "Before COVID", "mode": "Transit", "tier": "Never", "percent": 67.15}, {"period": "Before COVID", "mode": "Transit", "tier": "Rarely", "percent": 22.9}, {"period": "Before COVID", "mode": "Transit", "tier": "Sometimes", "percent": 6.25}, {"period": "Before COVID", "mode": "Transit", "tier": "Often", "percent": 3.7}, {"period": "During COVID", "mode": "Transit", "tier": "Never", "percent": 91.71}, {"period": "During COVID", "mode": "Transit", "tier": "Rarely", "percent": 3.38}, {"period": "During COVID", "mode": "Transit", "tier": "Sometimes", "percent": 2.95}, {"period": "During COVID", "mode": "Transit", "tier": "Often", "percent": 1.96}, {"period": "Expected After", "mode": "Transit", "tier": "Much less", "percent": 6.72}, {"period": "Expected After", "mode": "Transit", "tier": "Somewhat less", "percent": 4.66}, {"period": "Expected After", "mode": "Transit", "tier": "About the same", "percent": 80.94}, {"period": "Expected After", "mode": "Transit", "tier": "Somewhat more", "percent": 5.69}, {"period": "Expected After", "mode": "Transit", "tier": "Much more", "percent": 1.99}, {"period": "Before COVID", "mode": "Personal Bike", "tier": "Never", "percent": 62.43}, {"period": "Before COVID", "mode": "Personal Bike", "tier": "Rarely", "percent": 25.2}, {"period": "Before COVID", "mode": "Personal Bike", "tier": "Sometimes", "percent": 9.88}, {"period": "Before COVID", "mode": "Personal Bike", "tier": "Often", "percent": 2.5}, {"period": "During COVID", "mode": "Personal Bike", "tier": "Never", "percent": 77.37}, {"period": "During COVID", "mode": "Personal Bike", "tier": "Rarely", "percent": 8.19}, {"period": "During COVID", "mode": "Personal Bike", "tier": "Sometimes", "percent": 9.86}, {"period": "During COVID", "mode": "Personal Bike", "tier": "Often", "percent": 4.58}, {"period": "Expected After", "mode": "Personal Bike", "tier": "Much less", "percent": 2.0}, {"period": "Expected After", "mode": "Personal Bike", "tier": "Somewhat less", "percent": 2.63}, {"period": "Expected After", "mode": "Personal Bike", "tier": "About the same", "percent": 81.53}, {"period": "Expected After", "mode": "Personal Bike", "tier": "Somewhat more", "percent": 10.96}, {"period": "Expected After", "mode": "Personal Bike", "tier": "Much more", "percent": 2.89}, {"period": "Before COVID", "mode": "Shared Bike", "tier": "Never", "percent": 88.83}, {"period": "Before COVID", "mode": "Shared Bike", "tier": "Rarely", "percent": 7.87}, {"period": "Before COVID", "mode": "Shared Bike", "tier": "Sometimes", "percent": 2.28}, {"period": "Before COVID", "mode": "Shared Bike", "tier": "Often", "percent": 1.02}, {"period": "During COVID", "mode": "Shared Bike", "tier": "Never", "percent": 94.07}, {"period": "During COVID", "mode": "Shared Bike", "tier": "Rarely", "percent": 2.25}, {"period": "During COVID", "mode": "Shared Bike", "tier": "Sometimes", "percent": 2.43}, {"period": "During COVID", "mode": "Shared Bike", "tier": "Often", "percent": 1.25}, {"period": "Expected After", "mode": "Shared Bike", "tier": "Much less", "percent": 1.76}, {"period": "Expected After", "mode": "Shared Bike", "tier": "Somewhat less", "percent": 1.23}, {"period": "Expected After", "mode": "Shared Bike", "tier": "About the same", "percent": 91.58}, {"period": "Expected After", "mode": "Shared Bike", "tier": "Somewhat more", "percent": 3.93}, {"period": "Expected After", "mode": "Shared Bike", "tier": "Much more", "percent": 1.51}, {"period": "Before COVID", "mode": "Walking", "tier": "Never", "percent": 21.35}, {"period": "Before COVID", "mode": "Walking", "tier": "Rarely", "percent": 31.12}, {"period": "Before COVID", "mode": "Walking", "tier": "Sometimes", "percent": 25.3}, {"period": "Before COVID", "mode": "Walking", "tier": "Often", "percent": 22.22}, {"period": "During COVID", "mode": "Walking", "tier": "Never", "percent": 34.88}, {"period": "During COVID", "mode": "Walking", "tier": "Rarely", "percent": 11.92}, {"period": "During COVID", "mode": "Walking", "tier": "Sometimes", "percent": 23.3}, {"period": "During COVID", "mode": "Walking", "tier": "Often", "percent": 29.9}, {"period": "Expected After", "mode": "Walking", "tier": "Much less", "percent": 3.03}, {"period": "Expected After", "mode": "Walking", "tier": "Somewhat less", "percent": 3.6}, {"period": "Expected After", "mode": "Walking", "tier": "About the same", "percent": 64.68}, {"period": "Expected After", "mode": "Walking", "tier": "Somewhat more", "percent": 19.86}, {"period": "Expected After", "mode": "Walking", "tier": "Much more", "percent": 8.84}];
 
-    const svg = d3.select("svg");
-    const tooltip = d3.select(".tooltip");
+    const margin = { top: 16, right: 200, bottom: 80, left: 68 };
+    const totalW = 840, totalH = 420;
+    const W = totalW - margin.left - margin.right;
+    const H = totalH - margin.top  - margin.bottom;
 
-    const margin = { top: 30, right: 220, bottom: 95, left: 80 };
-    const width = +svg.attr("width") - margin.left - margin.right;
-    const height = +svg.attr("height") - margin.top - margin.bottom;
+    const svg = d3.select("#chart")
+      .attr("width",  totalW)
+      .attr("height", totalH);
 
     const g = svg.append("g")
-      .attr("transform", `translate(${margin.left}, ${margin.top})`);
+      .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    const usageTiers    = ["Never", "Rarely", "Sometimes", "Often"];
-    const expectedTiers = ["Much less", "Somewhat less", "About the same", "Somewhat more", "Much more"];
-
-    const modes = [
-      "Private Vehicle",
-      "Ridehail/Taxi",
-      "Transit",
-      "Personal Bike",
-      "Shared Bike",
-      "Walking"
-    ];
-
-    const x = d3.scaleBand()
-      .domain(modes)
-      .range([0, width])
-      .padding(0.2);
-
-    const y = d3.scaleLinear()
-      .domain([0, 100])
-      .range([height, 0]);
+    const modes = ["Private Vehicle","Ridehail/Taxi","Transit",
+                   "Personal Bike","Shared Bike","Walking"];
+    const usageTiers    = ["Never","Rarely","Sometimes","Often"];
+    const expectedTiers = ["Much less","Somewhat less","About the same",
+                           "Somewhat more","Much more"];
 
     const usageColor = d3.scaleOrdinal()
       .domain(usageTiers)
-      .range(["#d9d9d9", "#9ecae1", "#fdae6b", "#e6550d"]);
+      .range(["#EAF3FB", "#8FC8F0", "#4895EF", "#1a5fa8"]);
 
     const expectedColor = d3.scaleOrdinal()
       .domain(expectedTiers)
-      .range(["#2166ac", "#92c5de", "#f7f7f7", "#f4a582", "#ca0020"]);
+      .range(["#E63946", "#F5A8AC", "#EDF1F5", "#7ED4CD", "#2EC4B6"]);
 
-    // Axes
+    const x = d3.scaleBand().domain(modes).range([0, W]).padding(0.25);
+    const y = d3.scaleLinear().domain([0, 100]).range([H, 0]);
+
+    g.selectAll(".gridline")
+      .data([0, 25, 50, 75, 100]).join("line")
+      .attr("class", "gridline")
+      .attr("x1", 0).attr("x2", W)
+      .attr("y1", d => y(d)).attr("y2", d => y(d))
+      .attr("stroke", "#EDF1F5").attr("stroke-width", 1);
+
     g.append("g")
-      .attr("transform", `translate(0, ${height})`)
-      .call(d3.axisBottom(x))
+      .attr("transform", `translate(0,${H})`)
+      .call(d3.axisBottom(x).tickSize(0))
+      .call(ax => ax.select(".domain").attr("stroke", "#D4E0EA"))
       .selectAll("text")
-      .attr("transform", "rotate(-25)")
-      .style("text-anchor", "end")
-      .style("font-family", "Georgia")
-      .style("font-size", "12px");
+      .attr("dy", "1.2em")
+      .style("font-family","Inter").style("font-size","12px")
+      .style("fill", "#8FA8BC");
 
     g.append("g")
-      .call(d3.axisLeft(y))
+      .call(d3.axisLeft(y).ticks(5).tickFormat(d => d + "%").tickSize(0))
+      .call(ax => ax.select(".domain").attr("stroke", "#D4E0EA"))
       .selectAll("text")
-      .style("font-family", "Georgia")
-      .style("font-size", "12px");
+      .style("font-family","Inter").style("font-size","11px")
+      .style("fill", "#8FA8BC");
 
-    // Axis labels
-    g.append("text")
-      .attr("x", width / 2)
-      .attr("y", height + 72)
-      .attr("text-anchor", "middle")
-      .style("font-family", "Georgia")
-      .style("font-size", "12px")
-      .text("Transportation Mode");
+    svg.append("text")
+      .attr("transform","rotate(-90)")
+      .attr("x", -(margin.top + H / 2))
+      .attr("y", 18)
+      .attr("text-anchor","middle")
+      .style("font-family","Inter").style("font-size","12px")
+      .style("fill", "#8FA8BC")
+      .text("% of respondents");
 
-    g.append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("x", -height / 2)
-      .attr("y", -55)
-      .attr("text-anchor", "middle")
-      .style("font-family", "Georgia")
-      .style("font-size", "12px")
-      .text("Percent of respondents (%)");
+    svg.append("text")
+      .attr("x", margin.left + W / 2)
+      .attr("y", totalH - 8)
+      .attr("text-anchor","middle")
+      .style("font-family","Inter").style("font-size","12px")
+      .style("fill", "#8FA8BC")
+      .text("Transportation mode");
 
-    // Legend group
-    const legend = svg.append("g")
-      .attr("transform", `translate(${width + margin.left + 25}, ${margin.top + 20})`);
+    const legend = svg.append("g").attr("id","legend")
+      .attr("transform", `translate(${margin.left + W + 20},${margin.top + 8})`);
+
+    const tooltip = d3.select("#tooltip");
 
     function drawLegend(period) {
       legend.selectAll("*").remove();
-      const tiers      = period === "Expected After" ? expectedTiers : usageTiers;
-      const colorScale = period === "Expected After" ? expectedColor : usageColor;
+      const tiers  = period === "Expected After" ? expectedTiers : usageTiers;
+      const cScale = period === "Expected After" ? expectedColor : usageColor;
+      const label  = period === "Expected After" ? "Expected change" : "Usage frequency";
+
+      legend.append("text").attr("x",0).attr("y",0)
+        .style("font-size","12px").style("font-weight","500")
+        .style("fill","#5A7A94").style("font-family","Inter").text(label);
 
       tiers.forEach((tier, i) => {
-        const row = legend.append("g")
-          .attr("transform", `translate(0, ${i * 28})`);
-        row.append("rect")
-          .attr("width", 16).attr("height", 16)
-          .attr("fill", colorScale(tier))
-          .attr("stroke", "#999");
-        row.append("text")
-          .attr("x", 26).attr("y", 12)
-          .style("font-family", "Georgia")
-          .style("font-size", "12px")
-          .text(tier);
+        const row = legend.append("g").attr("transform",`translate(0,${i*26+18})`);
+        row.append("rect").attr("width",13).attr("height",13).attr("rx",2)
+          .attr("fill", cScale(tier))
+          .attr("stroke","#E4EAF0").attr("stroke-width",0.5);
+        row.append("text").attr("x",20).attr("y",11)
+          .style("font-size","12px").style("fill","#8FA8BC")
+          .style("font-family","Inter").text(tier);
       });
     }
 
     function prepareData(period) {
-      const filtered = rawData.filter(d => d.period === period);
       const tiers    = period === "Expected After" ? expectedTiers : usageTiers;
-
-      const modeMap = new Map();
-      modes.forEach(mode => {
-        modeMap.set(mode, { mode });
-        tiers.forEach(tier => { modeMap.get(mode)[tier] = 0; });
+      const filtered = rawData.filter(d => d.period === period);
+      const modeMap  = new Map();
+      modes.forEach(m => {
+        modeMap.set(m, { mode: m });
+        tiers.forEach(t => modeMap.get(m)[t] = 0);
       });
-
-      filtered.forEach(d => { modeMap.get(d.mode)[d.tier] = +d.percent; });
+      filtered.forEach(d => { if (modeMap.has(d.mode)) modeMap.get(d.mode)[d.tier] = +d.percent; });
       return { data: Array.from(modeMap.values()), tiers };
     }
 
-    function updateChart(period, clickedBtn) {
-      // Toggle active button style
+    function updateChart(period, btn) {
       document.querySelectorAll(".buttons button").forEach(b => b.classList.remove("active"));
-      if (clickedBtn) clickedBtn.classList.add("active");
-
-      // Show/hide scale warning
+      if (btn) btn.classList.add("active");
       document.getElementById("scaleWarning").style.display =
         period === "Expected After" ? "block" : "none";
 
-      const prepared   = prepareData(period);
-      const data       = prepared.data;
-      const tiers      = prepared.tiers;
-      const colorScale = period === "Expected After" ? expectedColor : usageColor;
-
+      const { data, tiers } = prepareData(period);
+      const cScale  = period === "Expected After" ? expectedColor : usageColor;
       const stacked = d3.stack().keys(tiers)(data);
 
       drawLegend(period);
 
-      // Period label
-      svg.selectAll(".period-label").remove();
-      svg.append("text")
-        .attr("class", "period-label")
-        .attr("x", margin.left)
-        .attr("y", 18)
-        .style("font-family", "Georgia")
-        .style("font-size", "13px")
-        .style("font-weight", "bold")
-        .text(`Period shown: ${period}`);
-
-      // Bars
-      const layers = g.selectAll(".layer")
-        .data(stacked, d => d.key);
-
+      const layers = g.selectAll(".layer").data(stacked, d => d.key);
       layers.exit().remove();
 
-      const layerMerge = layers.enter()
-        .append("g")
-        .attr("class", "layer")
-        .merge(layers)
-        .attr("fill", d => colorScale(d.key));
+      const layerMerge = layers.enter().append("g").attr("class","layer")
+        .merge(layers).attr("fill", d => cScale(d.key));
 
       const rects = layerMerge.selectAll("rect")
         .data(d => d.map(v => ({ ...v, key: d.key })), d => d.data.mode);
 
-      rects.exit().remove();
+      rects.exit().transition().duration(400)
+        .attr("height", 0).attr("y", H).remove();
 
-      rects.enter()
-        .append("rect")
-        .attr("x", d => x(d.data.mode))
-        .attr("width", x.bandwidth())
-        .attr("y", height)
-        .attr("height", 0)
-        .on("mousemove", function(event, d) {
-          tooltip
-            .style("opacity", 1)
-            .html(
-              `<strong>${d.data.mode}</strong><br>` +
-              `${d.key}: ${(d[1] - d[0]).toFixed(1)}%`
-            )
-            .style("left", `${event.pageX + 12}px`)
-            .style("top",  `${event.pageY - 28}px`);
+      rects.enter().append("rect")
+        .attr("x", d => x(d.data.mode)).attr("width", x.bandwidth())
+        .attr("y", H).attr("height", 0).attr("rx", 2)
+        .on("mousemove", (event, d) => {
+          tooltip.style("opacity",1)
+            .html(`<strong>${d.data.mode}</strong><br>${d.key}: ${(d[1]-d[0]).toFixed(1)}%`)
+            .style("left",(event.clientX+14)+"px")
+            .style("top", (event.clientY-36)+"px");
         })
-        .on("mouseout", () => tooltip.style("opacity", 0))
+        .on("mouseout", () => tooltip.style("opacity",0))
         .merge(rects)
-        .transition().duration(800)
-        .attr("x",      d => x(d.data.mode))
-        .attr("width",  x.bandwidth())
-        .attr("y",      d => y(d[1]))
-        .attr("height", d => y(d[0]) - y(d[1]));
+        .transition().duration(700).ease(d3.easeCubicInOut)
+        .attr("x", d => x(d.data.mode)).attr("width", x.bandwidth())
+        .attr("y", d => y(d[1])).attr("height", d => Math.max(0, y(d[0])-y(d[1])));
     }
 
-    // Initialize
     updateChart("Before COVID", document.getElementById("btn-before"));
   </script>
 </body>

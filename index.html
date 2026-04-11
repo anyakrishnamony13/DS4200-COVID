@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DS4200 Final Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Lexend:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="splash">
+  <p class="splash-eyebrow">DS 4200 · Information Presentation & Visualization Final Project</p>
+  <h1 class="splash-title">
+    How COVID-19 Reshaped How
+    <em>Americans Work &amp; Move</em>
+  </h1>
+  <div class="splash-divider"></div>
+  <p class="splash-names">Anya Krishnamony · Anh Khue Thai · Alex Salducco</p>
+  <p class="splash-course">Northeastern University · Spring 2026</p>
+  <button class="splash-btn" id="splash-cta">View Project</button>
+</div>
+
+<div id="progress"></div>
+
+<nav id="nav">
+  <div class="nav-logo" onclick="scrollToTop()">COVID<em>—19</em></div>
+  <ul class="nav-links">
+    <li><a href="#intro">Introduction</a></li>
+    <li><a href="#references">References</a></li>
+    <li class="nav-dropdown">
+      <a href="#visualizations">Visualizations</a>
+      <div class="dropdown-menu">
+        <a href="#vis1"><span class="dm-chip">01</span>WFH Access by Income</a>
+        <a href="#vis2"><span class="dm-chip">02</span>Mode Shift Matrix</a>
+        <a href="#vis3"><span class="dm-chip">03</span>Productivity by Job Type</a>
+        <a href="#vis4"><span class="dm-chip">04</span>Commute vs. WFH Adoption</a>
+        <a href="#vis5"><span class="dm-chip">05</span>The Great Mode Migration</a>
+      </div>
+    </li>
+    <li><a href="#findings">Findings</a></li>
+  </ul>
+</nav>
+
+<main id="main">
+
+  <section id="intro">
+    <div class="container">
+      <div class="hero-grid">
+
+        <div>
+          <div class="hero-tag">COVID-19 Behavioral Study</div>
+          <h2 class="hero-title">
+            How COVID-19 Reshaped<br>
+            How Americans <em>Work &amp; Move</em>
+          </h2>
+          <p class="hero-body">
+            The COVID-19 pandemic fundamentally disrupted how Americans move, work, and live. Within weeks of the outbreak, commuters abandoned public transit, offices emptied, and streets grew quiet, yet for many workers, there was no option to stay home. This project investigates how behavioral and lifestyle patterns shifted before, during, and after the pandemic, with a particular focus on transportation mode choice and work-from-home adoption. We examine how these shifts varied across demographic groups, including income, age, and employment status, asking not just what changed, but who experienced the largest disruptions and whether those changes are likely to persist.
+          </p>
+          <p class="hero-body">
+            Understanding these patterns matters beyond historical curiosity. Transportation agencies, urban planners, and employers are still navigating a post-pandemic landscape where remote work policies, transit ridership, and commuting norms remain in flux. By visualizing behavioral change across demographic lines, this project aims to identify which disruptions were temporary reactions to crisis and which represent lasting structural shifts, with the goal of informing more equitable policy and planning decisions going forward.
+
+          </p>
+          <p class="hero-body">
+            This project uses the COVID Future Wave 1B Survey Data, collected by Arizona State University and the University of Illinois at Chicago with funding from the National Science Foundation. The dataset contains 7,613 survey responses from adults across the United States, collected during 2020. The survey captures a wide range of information, including demographic characteristics (e.g. age, income, education, employment status, and geographic region), travel behavior, work-from-home patterns, online activity, risk perception, and lifestyle changes related to the pandemic. After cleaning and filtering to retain complete cases for our key variables, our working dataset contains 6,872 observations.
+          </p>
+        </div>
+
+        <div>
+          <div class="data-card reveal">
+            <div class="data-card-label">About the Dataset</div>
+            <div class="stat-grid">
+              <div class="stat-box">
+                <div class="stat-num"><em>6,872</em></div>
+                <div class="stat-label">Survey respondents (cleaned)</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-num"><em>59+</em></div>
+                <div class="stat-label">Variables analyzed</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-num"><em>2020</em></div>
+                <div class="stat-label">Collection year</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-num"><em>9 divs</em></div>
+                <div class="stat-label">U.S. census regions</div>
+              </div>
+            </div>
+            <div class="data-meta">
+              <strong>Source:</strong> COVID Future Wave 1B Survey, v1.0.0<br>
+              <strong>Collected by:</strong> Arizona State University & University of Illinois Chicago<br>
+              <strong>Funded by:</strong> National Science Foundation<br>
+              <strong>License:</strong> Open Data Commons Attribution License (ODC-By) 1.0<br>
+              <strong>DOI:</strong> <a href="https://dataverse.asu.edu/dataset.xhtml?persistentId=doi:10.48349/ASU/QO7BTC">doi:10.48349/ASU/QO7BTC</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="references">
+    <div class="container">
+      <p class="section-label">Literature</p>
+      <h2 class="section-title">Reference Papers</h2>
+      <p class="section-body">
+        Two reference papers served as the basis in informing our analytical approach and provided
+        context for interpreting our data.
+      </p>
+
+      <div class="ref-grid">
+        <div class="ref-card reveal">
+          <span class="ref-badge">Remote Work</span>
+          <p class="ref-title">How Hybrid Working from Home Works Out</p>
+          <p class="ref-authors">Bloom, N., Han, R., & Liang, J.</p>
+          <p class="ref-journal">National Bureau of Economic Research, 2022</p>
+          <p class="section-body" style="font-size:13px;">
+            Examines the shift to remote work during COVID-19 and its effects on productivity, employee satisfaction, and long-term workplace trends. The main finding from this study was that remote work became adopted across most industries and significantly improved worker satisfaction and productivity.
+          </p>
+          <a class="ref-link" href="https://www.nber.org/papers/w30292". target="_blank">Read paper</a>
+        </div>
+
+        <div class="ref-card reveal">
+          <span class="ref-badge">Travel Behavior</span>
+          <p class="ref-title">Predictors of Changes in Travel Behavior During COVID-19</p>
+          <p class="ref-authors">Morar, C., Tiba, A., Basarin, B., et al.</p>
+          <p class="ref-journal">National Institutes of Health, 2021</p>
+          <p class="section-body" style="font-size:13px;">
+            Examines how individual characteristics and risk perceptions influenced changes in travel behavior during the pandemic. The study finds that several factors, such as concerns about health risks, personal attitudes, and psychological traits, played a major role in influencing travel frequency.
+          </p>
+          <a class="ref-link" href="https://pubmed.ncbi.nlm.nih.gov/34769688/" target="_blank">Read paper</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="visualizations">
+    <div class="container">
+      <p class="section-label">Data Analysis</p>
+      <h2 class="section-title">Visualizations</h2>
+      <p class="section-body" style="margin-bottom: 64px;">
+        Each visualization depicts a different aspect of pandemic-era behavioural changes. Together, they tell a unified story.
+      </p>
+
+      <div class="viz-section" id="vis1">
+        <div class="viz-meta">
+          <span class="viz-num">01</span>
+          <span class="viz-badge">Static · Altair</span>
+        </div>
+        <h3 class="viz-title">The Commute Collapse: Who Got to Work from Home?</h3>
+        <p class="viz-takeaway">
+          This chart compares the percentage of pre-COVID workers who had WFH access
+          across three time periods (before, during, and expected after the pandemic),
+          broken down by household income bracket.
+        </p>
+
+        <div class="viz-frame">
+          <iframe src="vis1.html" height="520" title="WFH access by income group"></iframe>
+        </div>
+        <button class="design-toggle" onclick="toggleDesign(this)">
+          <span class="design-toggle-icon">+</span>
+          Design notes
+        </button>
+        <div class="design-notes">
+          This visualization uses a faceted grouped bar chart to compare WFH access rates across three time periods (Before COVID, During COVID, and Expected After COVID) broken down by household income bracket. A faceted layout was chosen to give each income group its own visual space, reducing clutter and allowing for clear within group comparisons across time periods. Color encodes time periods using three distinct categorical hues, since the three periods are fundamentally different categories rather than on a continuous scale. The y-axis is shared across all facets to preserve comparability across income groups, making it immediately apparent that absolute access rates differ by income bracket.
+        </div><br>
+        <div class="key-insight">
+          <span class="key-insight-icon">↗</span>
+          <p>
+            This visualization reveals a persistent and widening gap in WFH access across income groups throughout the pandemic. Lower-income workers, defined here as households earning under $35,000 annually, saw only modest gains in WFH access during COVID compared to their higher-income counterparts, and their expected post-pandemic access remains well below that of higher earners. In contrast, workers in households earning $125,000 or more saw WFH access rise to over 70% during the pandemic and expect to keep much of that flexibility going forward. This pattern depicts a structural inequality: higher-income jobs tend to be knowledge-based and office-adjacent, making them far more compatible with remote work. The result is that lower-income workers, who often face greater financial issues, were also less likely to benefit from the safety and flexibility that remote work provided during a public health crisis.
+          </p>
+        </div>
+      </div>
+
+      <div class="viz-section" id="vis2">
+        <div class="viz-meta">
+          <span class="viz-num">02</span>
+          <span class="viz-badge">Static · Altair</span>
+        </div>
+        <h3 class="viz-title">Mode Shift Matrix: Which Transportation Modes Gained and Lost Users?</h3>
+        <p class="viz-takeaway">
+          A heatmap showing the average change in days per week of transportation use
+          (during minus before COVID) across six modes and four income groups.
+        </p>
+        <div class="viz-frame">
+          <iframe src="vis2.html" height="480" title="Transportation mode shift heatmap"></iframe>
+        </div>
+        <button class="design-toggle" onclick="toggleDesign(this)">
+          <span class="design-toggle-icon">+</span>
+          Design notes
+        </button>
+        <div class="design-notes">
+          This heatmap was chosen because it efficiently communicates change across two categorical dimensions simultaneously, transportation mode and income group, in a way that a bar chart or line chart could not without becoming cluttered. The diverging red-blue color scale encodes direction of change intuitively, with red indicating increased usage and blue indicating decreased usage. Cell annotations display the exact numeric values to support precise reading alongside the color. Modes are ordered from most to least commonly used before the pandemic, and income groups are ordered low to high. The Georgia serif font was chosen to match the typographic style used across all project visualizations. One limitation is that the pre-COVID transportation variables use an ordinal frequency scale converted to numeric values, while the during-COVID variables use actual days per week, so the magnitude of change values should be interpreted directionally rather than as precise day-count differences.
+        </div><br>
+        <div class="key-insight">
+          <span class="key-insight-icon">↗</span>
+          <p>
+            The heatmap reveals that transportation mode shifts during COVID-19 were not uniform across modes or income groups. Walking increased substantially for all income groups, with the highest-income households (+0.55 days/week) showing the largest gain, likely reflecting the ability to work from home and use walking for exercise rather than commuting. Transit saw consistent declines across all groups, with high-income earners (-0.23) reducing their use more than lower-income groups (-0.05), possibly because higher-income workers had more flexibility to avoid shared spaces. Private vehicle use increased across all income groups, but was especially pronounced among middle-income households (+1.19 for $75k-$124k), suggesting these workers were neither able to work from home nor comfortable using transit. Ridehailing declined across all groups, with higher-income households showing the largest drop (-0.16).
+          </p>
+        </div>
+      </div>
+
+      <div class="viz-section" id="vis3">
+        <div class="viz-meta">
+          <span class="viz-num">03</span>
+          <span class="viz-badge">Static · Altair</span>
+        </div>
+        <h3 class="viz-title">Productivity Winners and Losers: Who Thrived Working from Home?</h3>
+        <p class="viz-takeaway">
+          A diverging bar chart showing the share of workers who reported increased versus decreased productivity during COVID, broken down by pre-pandemic job category.
+        </p>
+
+        <div class="viz-frame">
+          <iframe src="vis3.html" height="420" title="Productivity change by job category"></iframe>
+        </div>
+        <button class="design-toggle" onclick="toggleDesign(this)">
+          <span class="design-toggle-icon">+</span>
+          Design notes
+        </button>
+        <div class="design-notes">
+          This visualization uses a diverging bar chart to compare self-reported productivity changes across occupational groups. A diverging structure was selected because it clearly separates positive (increased productivity) and negative (decreased productivity) responses around a neutral axis, allowing for immediate visual comparison. Job categories are displayed on the y-axis to highlight occupational differences, while percentage values ensure comparability across groups with different sample sizes. The color encoding reinforces directionality: green indicates productivity gains and red indicates productivity losses. This design emphasizes balance and contrast, making it easy to identify which job categories experienced net productivity improvements versus declines during the shift to remote work.
+        </div><br>
+        <div class="key-insight">
+          <span class="key-insight-icon">↗</span>
+          <p>
+            This visualization reveals clear differences in how remote work affected workers across occupational groups. Professional, managerial, and technical workers are more likely to report increased productivity, suggesting that these roles adapt well to remote environments due to their flexibility and autonomy. In contrast, workers in sales, service, and other roles show higher levels of decreased productivity, indicating that these jobs may be less compatible with remote work due to their reliance on in-person interaction or structured settings. Overall, the results highlight that the productivity impacts of remote work are uneven and closely tied to job characteristics. This supports the idea that the benefits of the shift to remote work were not distributed equally across the workforce.
+          </p>
+        </div>
+      </div>
+
+      <div class="viz-section" id="vis4">
+        <div class="viz-meta">
+          <span class="viz-num">04</span>
+          <span class="viz-badge">Interactive · Altair</span>
+        </div>
+        <h3 class="viz-title">Commute Time vs. WFH Adoption: Did Long Commuters Embrace Remote Work More?</h3>
+        <p class="viz-takeaway">
+          An interactive scatter plot linking pre-COVID commute time to current WFH
+          days, color-coded by education level.
+        </p>
+
+        <div class="viz-frame">
+          <iframe src="vis4.html" height="600" title="Commute time vs WFH adoption scatter"></iframe>
+        </div>
+        <button class="design-toggle" onclick="toggleDesign(this)">
+          <span class="design-toggle-icon">+</span>
+          Design notes
+        </button>
+       <div class="design-notes">
+         This visualization combines an interactive scatter plot with a linked bar chart to explore how pre-pandemic commute time relates to current and expected remote work behavior. A scatter plot was chosen because it effectively shows relationships between two continuous variables (commute time and current WFH frequency) while still allowing categorical variation to be encoded through color (expected WFH frequency). A linked bar chart was added to provide a clearer summary distribution of expected post-pandemic remote work frequency for selected subgroups. An interactive brush selection allows users to filter the dataset dynamically, enabling deeper exploration of whether individuals with longer commute times systematically differ in their remote work expectations for the future. This design supports exploratory analysis by allowing users to move between individual-level patterns and aggregated summaries. Color was used to encode expected future WFH frequency, emphasizing behavioral outcomes rather than demographic characteristics. This design choice strengthens the narrative focus on long-term remote work preference rather than static identity-based grouping.
+       </div><br>
+        <div class="key-insight">
+          <span class="key-insight-icon">↗</span>
+          <p>
+            The commute-time visualization suggests that during the COVID-19 period, working from home multiple days per week was common across respondents, largely independent of commute length. This high baseline of remote work makes the relationship between commute time and WFH behavior less immediately distinct. However, a more subtle pattern emerges: as commute time increases, there is a general tendency for individuals to report slightly higher numbers of WFH days. This trend is not as apparent among individuals with shorter commutes, where WFH frequency is already relatively high across the board, creating substantial overlap and making differences harder to distinguish. The same pattern extends to expectations for future remote work. While expected WFH frequency varies across respondents, interactive exploration reveals that individuals who currently work from home less frequently also tend to expect fewer WFH days in the future, whereas those who currently work from home more often anticipate continuing that pattern. Additionally, when examining groups across increasing commute times within similar levels of current WFH behavior, expected remote work frequency tends to increase slightly as commute time grows. Together, these patterns suggest that while commute time does not strongly differentiate WFH behavior on its own, it still contributes to shaping both current practices and future expectations, particularly when considered alongside existing levels of remote work engagement.
+             </p>
+        </div>
+      </div>
+
+      <div class="viz-section" id="vis5">
+        <div class="viz-meta">
+          <span class="viz-num">05</span>
+          <span class="viz-badge">Interactive · D3</span>
+        </div>
+        <h3 class="viz-title">The Great Mode Migration: How Transportation Choices Shifted</h3>
+        <p class="viz-takeaway">
+          An animated stacked bar chart built in D3 showing how the distribution of
+          transportation usage tiers shifted before, during, and after COVID.
+        </p>
+
+        <div class="viz-frame">
+          <iframe src="vis5.html" height="560" title="Transportation mode migration D3 chart"></iframe>
+        </div>
+        <button class="design-toggle" onclick="toggleDesign(this)">
+          <span class="design-toggle-icon">+</span>
+          Design notes
+        </button>
+        <div class="design-notes">
+          The D3 stacked bar chart was chosen for this visualization because it allows direct comparison of usage distribution across all six transportation modes at once, while the animated toggle between time periods makes the temporal shift clear in a way that three separate static charts could not. Each bar represents 100% of respondents for a given mode, stacked by usage frequency tier, so the viewer can immediately see how the composition of users changed over time. The animated transition between periods draws attention to which modes changed dramatically versus which remained stable. A separate color scale is used for the Expected After period, shifting from usage frequency tiers to relative change categories, and a warning banner appears automatically when this view is selected to prevent misinterpretation. Tooltip interactions allow users to read exact percentages for any segment on hover. The Georgia serif font and muted color palette were chosen to maintain visual consistency with the other project visualizations.
+        </div><br>
+        <div class="key-insight">
+          <span class="key-insight-icon">↗</span>
+          <p>
+            This interactive chart shows how transportation mode usage shifted across three time periods: before COVID, during COVID, and expected after COVID. The most dramatic change appears in transit and ridehailing, where the share of frequent users collapsed during the pandemic as nearly all respondents shifted into the "Never" tier. Walking shows the opposite pattern, with the share of frequent walkers growing noticeably during COVID and expected to remain elevated afterward, suggesting that increased walking may be one of the more lasting behavioral changes from the pandemic. Private vehicle use remained consistently high across all three periods. Perhaps most telling is the Expected After view: for transit and ridehailing, respondents are more likely to expect their use to stay the same or decrease rather than return to pre-pandemic levels, suggesting these modes may face a long-term rather than temporary decline in ridership. Walking and personal biking are the only modes where a meaningful share of respondents expect to increase their use.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="findings">
+    <div class="container">
+      <p class="section-label">Conclusions</p>
+      <h2 class="section-title">Key Findings & Conclusion</h2>
+      <p class="section-body">
+        Across five visualizations, three constructive conclusions emerge about how
+        COVID-19 reshaped behavioral patterns, especially regarding remote/in-person work and transportation.
+      </p>
+
+      <div class="findings-grid">
+        <div class="finding-card reveal">
+          <div class="finding-num teal">01</div>
+          <h4 class="finding-title">Wider gaps between income groups in remote work</h4>
+          <p class="finding-body">
+            The pandemic deepened existing inequalities in remote work. Higher-income, professional workers gained the most WFH access, reported stronger productivity gains, and are expected to keep that flexibility. Lower-income and service-sector workers saw less change and were less likely to benefit from the safety and flexibility remote work provided.
+          </p>
+        </div>
+        <div class="finding-card reveal">
+          <div class="finding-num blue">02</div>
+          <h4 class="finding-title">Shifting away from public transit</h4>
+          <p class="finding-body">
+            Transit use collapsed during COVID and respondents do not expect a full recovery. Walking increased and is expected to stay that way. Private vehicle use also surged, particularly among middle-income households. These patterns suggest lasting changes in urban mobility rather than a temporary reaction to a health crisis.
+          </p>
+        </div>
+        <div class="finding-card reveal">
+          <div class="finding-num amber">03</div>
+          <h4 class="finding-title">Burden of longer commutes shaped remote work expectations</h4>
+          <p class="finding-body">
+            Workers with longer commutes worked from home more during COVID and expect to continue doing so afterward. The pandemic gave them a direct comparison point, and many concluded the daily commute was not worth returning to. Remote work preferences are not arbitrary, but instead are shaped in part by how far people had to travel in the first place.
+          </p>
+        </div>
+      </div>
+
+  <div class="future-box reveal">
+        <h3>Future Implications</h3>
+        <p>The patterns uncovered carry real implications for policymakers, employers, and urban planners navigating the post-pandemic landscape.</p>
+    <ul>
+  <li>Transit agencies should plan for long-term ridership loss, not temporary.</li>
+  <li>Employers should factor in commute burden when setting return-to-office policies, since workers with long commutes have the strongest case for staying remote.</li>
+  <li>Cities should invest in walking and cycling infrastructure, since those habits appear to be sticking.</li>
+  <li>Income played a role in every outcome in this data. Lower-income workers had less flexibility, fewer productivity gains, and less control over their working conditions. Policies built in the post-pandemic period have the potential to either close or widen these gaps.</li>
+</ul>
+
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">COVID<em>—19</em></div>
+      <div class="footer-info">
+        DS 4200 · Information Presentation &amp; Visualization Final Project<br>
+        Northeastern University · Spring 2026<br>
+        Anya Krishnamony · Anh Khue Thai · Alex Salducco<br>
+        <a href="https://dataverse.asu.edu/dataset.xhtml;jsessionid=9307c7f251abbf4b9883bb8569dd?persistentId=doi:10.48349/ASU/QO7BTC" target="_blank">COVID Future Wave 1B Survey</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+  // ── SPLASH: dismiss on button click ─────────────────────────────────────
+  document.getElementById('splash-cta').addEventListener('click', function () {
+    const splash = document.getElementById('splash');
+    splash.classList.add('dismissed');
+    // After transition ends, remove from DOM so it can't intercept scroll/clicks
+    splash.addEventListener('transitionend', function () {
+      splash.style.display = 'none';
+    }, { once: true });
+  });
+
+  // Also dismiss if user presses Enter or Space on the button
+  document.getElementById('splash-cta').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') this.click();
+  });
+
+  // ── SCROLL TO TOP (nav logo click) ──────────────────────────────────────
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── PROGRESS BAR ─────────────────────────────────────────────────────────
+  const progressBar = document.getElementById('progress');
+  window.addEventListener('scroll', function () {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    progressBar.style.width = pct + '%';
+  });
+
+  // ── ACTIVE NAV LINK on scroll ────────────────────────────────────────────
+  const sections = document.querySelectorAll('section[id], div[id]');
+  const navLinks = document.querySelectorAll('#nav .nav-links a[href^="#"]');
+
+  const observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        navLinks.forEach(function (link) {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + id) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+
+  document.querySelectorAll('section[id]').forEach(function (s) {
+    observer.observe(s);
+  });
+
+  // ── SCROLL REVEAL ────────────────────────────────────────────────────────
+  const revealObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(function (el) {
+    revealObserver.observe(el);
+  });
+
+  // ── DESIGN NOTES TOGGLE ──────────────────────────────────────────────────
+  function toggleDesign(btn) {
+    btn.classList.toggle('open');
+    const notes = btn.nextElementSibling;
+    notes.classList.toggle('open');
+  }
+
+  // ── IFRAME AUTO-HEIGHT ───────────────────────────────────────────────────
+  // Attempt to resize iframes to their content height once loaded
+  // (only works when served from same origin / local file system)
+  document.querySelectorAll('.viz-frame iframe').forEach(function (iframe) {
+    iframe.addEventListener('load', function () {
+      try {
+        const h = iframe.contentDocument.documentElement.scrollHeight;
+        if (h > 100) iframe.style.height = h + 'px';
+      } catch (e) {
+        // Cross-origin — keep the fixed height set in HTML
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
