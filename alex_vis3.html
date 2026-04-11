@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@6.1.0"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-16ede81f515a379eff5b016a80d74547"}, "mark": {"type": "bar"}, "encoding": {"color": {"field": "prod_change_clean", "legend": {"title": "Productivity Change"}, "scale": {"domain": ["Increased", "Decreased"], "range": ["#55A868", "#C44E52"]}, "type": "nominal"}, "tooltip": [{"field": "jobcat_pre", "type": "nominal"}, {"field": "prod_change_clean", "type": "nominal"}, {"field": "pct", "format": ".1f", "type": "quantitative"}], "x": {"axis": {"format": ".0f", "labelFont": "Georgia", "titleFont": "Georgia"}, "field": "pct", "title": "% Reporting Productivity Change", "type": "quantitative"}, "y": {"axis": {"labelFont": "Georgia", "titleFont": "Georgia"}, "field": "jobcat_pre", "sort": "-x", "title": "Job Category", "type": "nominal"}}, "height": 400, "title": "Productivity Winners and Losers: Who Thrived Working from Home?", "width": 600, "$schema": "https://vega.github.io/schema/vega-lite/v6.1.0.json", "datasets": {"data-16ede81f515a379eff5b016a80d74547": [{"jobcat_pre": "Clerical or administrative support", "prod_change_clean": "Decreased", "count": 64, "pct": -43.83561643835616}, {"jobcat_pre": "Clerical or administrative support", "prod_change_clean": "Increased", "count": 82, "pct": 56.16438356164384}, {"jobcat_pre": "Manufacturing or construction", "prod_change_clean": "Decreased", "count": 52, "pct": -48.148148148148145}, {"jobcat_pre": "Manufacturing or construction", "prod_change_clean": "Increased", "count": 56, "pct": 51.85185185185185}, {"jobcat_pre": "Professional, managerial, or technical", "prod_change_clean": "Decreased", "count": 241, "pct": -37.24884080370943}, {"jobcat_pre": "Professional, managerial, or technical", "prod_change_clean": "Increased", "count": 406, "pct": 62.75115919629057}, {"jobcat_pre": "Sales or service", "prod_change_clean": "Decreased", "count": 84, "pct": -58.333333333333336}, {"jobcat_pre": "Sales or service", "prod_change_clean": "Increased", "count": 60, "pct": 41.66666666666667}, {"jobcat_pre": "Something else", "prod_change_clean": "Decreased", "count": 98, "pct": -49.494949494949495}, {"jobcat_pre": "Something else", "prod_change_clean": "Increased", "count": 100, "pct": 50.505050505050505}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>

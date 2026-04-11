@@ -427,22 +427,17 @@ def vis3_productivity_diverging(df):
     )
     return chart
 
-
-
 def vis4_commute_wfh_interactive(df):
     """
     Scatter (commute time vs WFH days) + linked bar (expected WFH freq).
-    Brush selection filters the bar chart.
-    Color = education level (4 distinct hues).
-    Legend on right, matching vis5.
+    Brush selection on scatter filters the bar chart below, and color encodes expected WFH frequency.
     """
 
     data = df[
         df["pre_work_pri_time"].notna() &
         df["wfh_now_days"].notna() &
-        df["wfh_freq_exp"].notna() &
-        df["educ_simple"].notna()
-    ].copy()
+        df["wfh_freq_exp"].notna()
+        ].copy()
     data = data[data["pre_work_pri_time"] <= 120].copy()
 
     brush = alt.selection_interval(name="brush")
@@ -460,37 +455,40 @@ def vis4_commute_wfh_interactive(df):
     }
     data["wfh_freq_exp_label"] = data["wfh_freq_exp"].map(WFH_EXP_LABELS).fillna(data["wfh_freq_exp"])
 
-    educ_scale = alt.Scale(
-        domain=EDUC_ORDER,
-        range=[COLOR_EDUC[e] for e in EDUC_ORDER],
-    )
-
     legend_cfg = {k: v for k, v in _LEGEND_CFG.items()
                   if k not in ("padding", "rowPadding")}
 
+    wfh_color_scale = alt.Scale(
+        domain=WFH_EXP_ORDER,
+        range=["#4895EF", "#9B72CF", "#F4A261", "#E8C547", "#2EC4B6", "#E63946"],
+    )
+
     scatter = (
         alt.Chart(data)
-        .mark_circle(size=45, opacity=0.55, stroke="white", strokeWidth=0.5)
+        .mark_circle(size=60, opacity=0.6, stroke="white", strokeWidth=0.5)
         .encode(
             x=alt.X("pre_work_pri_time:Q",
                     title="Pre-COVID commute time (minutes)",
                     scale=alt.Scale(domain=[0, 120]),
                     axis=alt.Axis(labelPadding=6, titlePadding=10)),
             y=alt.Y("wfh_now_days:Q",
-                    title="WFH days in past 7 days",
+                    title="WFH days per week (now)",
                     axis=alt.Axis(labelPadding=6, titlePadding=10)),
-            color=alt.Color("educ_simple:N", sort=EDUC_ORDER, scale=educ_scale,
-                            legend=alt.Legend(title="Education level", orient="right",
-                                              **legend_cfg)),
+            color=alt.Color(
+                "wfh_freq_exp:N",
+                sort=WFH_EXP_ORDER,
+                scale=wfh_color_scale,
+                legend=alt.Legend(title="Expected WFH frequency", orient="right",
+                                  **legend_cfg),
+            ),
             tooltip=[
                 alt.Tooltip("pre_work_pri_time:Q", title="Commute time (min)"),
-                alt.Tooltip("wfh_now_days:Q",      title="WFH days now"),
-                alt.Tooltip("wfh_freq_exp:N",      title="Expected WFH freq"),
-                alt.Tooltip("educ_simple:N",        title="Education"),
+                alt.Tooltip("wfh_now_days:Q", title="WFH days now"),
+                alt.Tooltip("wfh_freq_exp:N", title="Expected WFH freq"),
             ],
         )
         .add_params(brush)
-        .properties(width=620, height=280)
+        .properties(width=620, height=360)
     )
 
     bars = (
@@ -500,29 +498,33 @@ def vis4_commute_wfh_interactive(df):
             x=alt.X("wfh_freq_exp_label:N",
                     sort=[WFH_EXP_LABELS[v] for v in WFH_EXP_ORDER],
                     axis=alt.Axis(
-                        title="Expected WFH frequency after COVID",
-                        labelAngle=0,
+                        title="Expected post-COVID WFH frequency",
+                        labelAngle=-30,
                         labelLimit=200,
                         labelPadding=8,
                         titlePadding=14,
                     )),
             y=alt.Y("count()",
-                    title="Number of respondents",
+                    title="Respondents",
                     axis=alt.Axis(labelPadding=6, titlePadding=10)),
-            color=alt.Color("educ_simple:N", sort=EDUC_ORDER,
-                            scale=educ_scale, legend=None),
+            color=alt.Color(
+                "wfh_freq_exp:N",
+                sort=WFH_EXP_ORDER,
+                scale=wfh_color_scale,
+                legend=None,
+            ),
             tooltip=[
                 alt.Tooltip("wfh_freq_exp:N", title="Expected freq"),
-                alt.Tooltip("count()",        title="Respondents"),
+                alt.Tooltip("count()", title="Respondents"),
             ],
         )
         .transform_filter(brush)
-        .properties(width=620, height=160)
+        .properties(width=620, height=200)
     )
 
     chart = (
         alt.vconcat(scatter, bars, spacing=24)
-        .configure(padding={"top": 20, "right": 160, "bottom": 20, "left": 20})
+        .configure(padding={"top": 20, "right": 200, "bottom": 20, "left": 20})
         .configure_view(stroke=BORDER_COLOR, strokeWidth=1)
         .configure_axis(**_AXIS_CFG)
         .configure_legend(**_LEGEND_CFG)
@@ -531,8 +533,7 @@ def vis4_commute_wfh_interactive(df):
             title=alt.TitleParams(
                 text="Commute time vs. WFH adoption: did long commuters embrace remote work more?",
                 subtitle=[
-                    "Each dot represents a worker, drag to select a region and the bar chart below will update",
-                    "to show expected post-COVID WFH frequency for the selected group."
+                    "Select regions in the scatter plot to filter expected work from home behavior in the bar chart below."
                 ],
                 subtitleColor=TEXT_SUBTITLE,
             )
