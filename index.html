@@ -33,10 +33,10 @@
       <a href="#visualizations">Visualizations</a>
       <div class="dropdown-menu">
         <a href="#vis1"><span class="dm-chip">01</span>WFH Access by Income</a>
-        <a href="#vis2"><span class="dm-chip">02</span>Mode Shift Matrix</a>
-        <a href="#vis3"><span class="dm-chip">03</span>Productivity by Job Type</a>
-        <a href="#vis4"><span class="dm-chip">04</span>Commute vs. WFH Adoption</a>
-        <a href="#vis5"><span class="dm-chip">05</span>The Great Mode Migration</a>
+        <a href="#vis3"><span class="dm-chip">02</span>Productivity by Job Type</a>
+        <a href="#vis2"><span class="dm-chip">03</span>Mode Shift Matrix</a>
+        <a href="#vis5"><span class="dm-chip">04</span>The Great Mode Migration</a>
+        <a href="#vis4"><span class="dm-chip">05</span>Commute vs. WFH Adoption</a>
       </div>
     </li>
     <li><a href="#findings">Findings</a></li>
@@ -170,42 +170,14 @@
         <div class="key-insight">
           <span class="key-insight-icon">↗</span>
           <p>
-            This visualization reveals a persistent and widening gap in WFH access across income groups throughout the pandemic. Lower-income workers, defined here as households earning under $35,000 annually, saw only modest gains in WFH access during COVID compared to their higher-income counterparts, and their expected post-pandemic access remains well below that of higher earners. In contrast, workers in households earning $125,000 or more saw WFH access rise to over 70% during the pandemic and expect to keep much of that flexibility going forward. This pattern depicts a structural inequality: higher-income jobs tend to be knowledge-based and office-adjacent, making them far more compatible with remote work. The result is that lower-income workers, who often face greater financial issues, were also less likely to benefit from the safety and flexibility that remote work provided during a public health crisis.
-          </p>
-        </div>
-      </div>
-
-      <div class="viz-section" id="vis2">
-        <div class="viz-meta">
-          <span class="viz-num">02</span>
-          <span class="viz-badge">Static · Altair</span>
-        </div>
-        <h3 class="viz-title">Mode Shift Matrix: Which Transportation Modes Gained and Lost Users?</h3>
-        <p class="viz-takeaway">
-          A heatmap showing the average change in days per week of transportation use
-          (during minus before COVID) across six modes and four income groups.
-        </p>
-        <div class="viz-frame">
-          <iframe src="vis2.html" height="480" title="Transportation mode shift heatmap"></iframe>
-        </div>
-        <button class="design-toggle" onclick="toggleDesign(this)">
-          <span class="design-toggle-icon">+</span>
-          Design notes
-        </button>
-        <div class="design-notes">
-          This heatmap was chosen because it efficiently communicates change across two categorical dimensions simultaneously, transportation mode and income group, in a way that a bar chart or line chart could not without becoming cluttered. The diverging red-blue color scale encodes direction of change intuitively, with red indicating increased usage and blue indicating decreased usage. Cell annotations display the exact numeric values to support precise reading alongside the color. Modes are ordered from most to least commonly used before the pandemic, and income groups are ordered low to high. The Inter font was chosen to match the typographic style used across all project visualizations. One limitation is that the pre-COVID transportation variables use an ordinal frequency scale converted to numeric values, while the during-COVID variables use actual days per week, so the magnitude of change values should be interpreted directionally rather than as precise day-count differences.
-        </div><br>
-        <div class="key-insight">
-          <span class="key-insight-icon">↗</span>
-          <p>
-            The heatmap reveals that transportation mode shifts during COVID-19 were not uniform across modes or income groups. Walking increased substantially for all income groups, with the highest-income households (+0.55 days/week) showing the largest gain, likely reflecting the ability to work from home and use walking for exercise rather than commuting. Transit saw consistent declines across all groups, with high-income earners (-0.23) reducing their use more than lower-income groups (-0.05), possibly because higher-income workers had more flexibility to avoid shared spaces. Private vehicle use increased across all income groups, but was especially pronounced among middle-income households (+1.19 for $75k-$124k), suggesting these workers were neither able to work from home nor comfortable using transit. Ridehailing declined across all groups, with higher-income households showing the largest drop (-0.16).
+            The most striking pattern in this chart is not the gap between groups, but the direction of change within each group across time. For lower-income workers (under $35k), WFH access is still climbing — their expected post-pandemic access is higher than during COVID, suggesting ongoing, if slow, gains. Higher-income workers tell the opposite story: they saw the largest surge during COVID, but expect a rollback afterward, meaning they gained the most but also anticipate losing some of it. The $125k+ group had the highest WFH access even before the pandemic, reinforcing that remote work was never a new opportunity for high earners — it was already the norm. Across all groups, the direction and magnitude of these shifts reflect how job type and income determined not just who got to work from home, but how durable those gains are likely to be.
           </p>
         </div>
       </div>
 
       <div class="viz-section" id="vis3">
         <div class="viz-meta">
-          <span class="viz-num">03</span>
+          <span class="viz-num">02</span>
           <span class="viz-badge">Static · Altair</span>
         </div>
         <h3 class="viz-title">Productivity Winners and Losers: Who Thrived Working from Home?</h3>
@@ -231,38 +203,37 @@
         </div>
       </div>
 
-      <div class="viz-section" id="vis4">
+      <div class="viz-section" id="vis2">
         <div class="viz-meta">
-          <span class="viz-num">04</span>
-          <span class="viz-badge">Interactive · Altair</span>
+          <span class="viz-num">03</span>
+          <span class="viz-badge">Static · Altair</span>
         </div>
-        <h3 class="viz-title">Commute Time vs. WFH Adoption: Did Long Commuters Embrace Remote Work More?</h3>
+        <h3 class="viz-title">Mode Shift Matrix: Which Transportation Modes Gained and Lost Users?</h3>
         <p class="viz-takeaway">
-          An interactive scatter plot linking pre-COVID commute time to current WFH
-          days, color-coded by education level.
+          A heatmap showing the average change in days per week of transportation use
+          (during minus before COVID) across six modes and four income groups.
         </p>
-
         <div class="viz-frame">
-          <iframe src="vis4.html" height="600" title="Commute time vs WFH adoption scatter"></iframe>
+          <iframe src="vis2.html" height="480" title="Transportation mode shift heatmap"></iframe>
         </div>
         <button class="design-toggle" onclick="toggleDesign(this)">
           <span class="design-toggle-icon">+</span>
           Design notes
         </button>
-       <div class="design-notes">
-         This visualization combines an interactive scatter plot with a linked bar chart to explore how pre-pandemic commute time relates to current and expected remote work behavior. A scatter plot was chosen because it effectively shows relationships between two continuous variables (commute time and current WFH frequency) while still allowing categorical variation to be encoded through color (expected WFH frequency). A linked bar chart was added to provide a clearer summary distribution of expected post-pandemic remote work frequency for selected subgroups. An interactive brush selection allows users to filter the dataset dynamically, enabling deeper exploration of whether individuals with longer commute times systematically differ in their remote work expectations for the future. This design supports exploratory analysis by allowing users to move between individual-level patterns and aggregated summaries. Color was used to encode expected future WFH frequency, emphasizing behavioral outcomes rather than demographic characteristics. This design choice strengthens the narrative focus on long-term remote work preference rather than static identity-based grouping.
-       </div><br>
+        <div class="design-notes">
+          This heatmap was chosen because it efficiently communicates change across two categorical dimensions simultaneously, transportation mode and income group, in a way that a bar chart or line chart could not without becoming cluttered. The diverging red-blue color scale encodes direction of change intuitively, with red indicating increased usage and blue indicating decreased usage. Cell annotations display the exact numeric values to support precise reading alongside the color. Modes are ordered from most to least commonly used before the pandemic, and income groups are ordered low to high. The Inter font was chosen to match the typographic style used across all project visualizations. One limitation is that the pre-COVID transportation variables use an ordinal frequency scale converted to numeric values, while the during-COVID variables use actual days per week, so the magnitude of change values should be interpreted directionally rather than as precise day-count differences.
+        </div><br>
         <div class="key-insight">
           <span class="key-insight-icon">↗</span>
           <p>
-            The commute-time visualization suggests that during the COVID-19 period, working from home multiple days per week was common across respondents, largely independent of commute length. This high baseline of remote work makes the relationship between commute time and WFH behavior less immediately distinct. However, a more subtle pattern emerges: as commute time increases, there is a general tendency for individuals to report slightly higher numbers of WFH days. This trend is not as apparent among individuals with shorter commutes, where WFH frequency is already relatively high across the board, creating substantial overlap and making differences harder to distinguish. The same pattern extends to expectations for future remote work. While expected WFH frequency varies across respondents, interactive exploration reveals that individuals who currently work from home less frequently also tend to expect fewer WFH days in the future, whereas those who currently work from home more often anticipate continuing that pattern. Additionally, when examining groups across increasing commute times within similar levels of current WFH behavior, expected remote work frequency tends to increase slightly as commute time grows. Together, these patterns suggest that while commute time does not strongly differentiate WFH behavior on its own, it still contributes to shaping both current practices and future expectations, particularly when considered alongside existing levels of remote work engagement.
-             </p>
+            The heatmap reveals that transportation mode shifts during COVID-19 were not uniform across modes or income groups. Walking increased substantially for all income groups, with the highest-income households (+0.55 days/week) showing the largest gain, likely reflecting the ability to work from home and use walking for exercise rather than commuting. Transit saw consistent declines across all groups, with high-income earners (-0.23) reducing their use more than lower-income groups (-0.05), possibly because higher-income workers had more flexibility to avoid shared spaces. Private vehicle use increased across all income groups, but was especially pronounced among middle-income households (+1.19 for $75k-$124k), suggesting these workers were neither able to work from home nor comfortable using transit. Ridehailing declined across all groups, with higher-income households showing the largest drop (-0.16).
+          </p>
         </div>
       </div>
 
       <div class="viz-section" id="vis5">
         <div class="viz-meta">
-          <span class="viz-num">05</span>
+          <span class="viz-num">04</span>
           <span class="viz-badge">Interactive · D3</span>
         </div>
         <h3 class="viz-title">The Great Mode Migration: How Transportation Choices Shifted</h3>
@@ -287,6 +258,35 @@
             This interactive chart shows how transportation mode usage shifted across three time periods: before COVID, during COVID, and expected after COVID. The most dramatic change appears in transit and ridehailing, where the share of frequent users collapsed during the pandemic as nearly all respondents shifted into the "Never" tier. Walking shows the opposite pattern, with the share of frequent walkers growing noticeably during COVID and expected to remain elevated afterward, suggesting that increased walking may be one of the more lasting behavioral changes from the pandemic. Private vehicle use remained consistently high across all three periods. Perhaps most telling is the Expected After view: for transit and ridehailing, respondents are more likely to expect their use to stay the same or decrease rather than return to pre-pandemic levels, suggesting these modes may face a long-term rather than temporary decline in ridership. Walking and personal biking are the only modes where a meaningful share of respondents expect to increase their use.
           </p>
         </div>
+      <div class="viz-section" id="vis4">
+        <div class="viz-meta">
+          <span class="viz-num">05</span>
+          <span class="viz-badge">Interactive · Altair</span>
+        </div>
+        <h3 class="viz-title">Commute Time vs. WFH Adoption: Did Long Commuters Embrace Remote Work More?</h3>
+        <p class="viz-takeaway">
+          An interactive scatter plot linking pre-COVID commute time to current WFH
+          days, color-coded by education level.
+        </p>
+
+        <div class="viz-frame">
+          <iframe src="vis4.html" height="600" title="Commute time vs WFH adoption scatter"></iframe>
+        </div>
+        <button class="design-toggle" onclick="toggleDesign(this)">
+          <span class="design-toggle-icon">+</span>
+          Design notes
+        </button>
+       <div class="design-notes">
+         This visualization uses an interactive bar chart with a commute time slider to explore how pre-pandemic commute length relates to expected post-COVID remote work behavior. A bar chart was chosen because it clearly shows the distribution of expected WFH frequency across the full respondent pool, making it easy to see which categories are most common. The slider filters respondents by their maximum pre-COVID commute time, allowing users to isolate shorter or longer commuters and observe how the distribution shifts. A single bar color was used intentionally to keep the focus on the shape of the distribution rather than categorical differences, since the interaction itself is the primary analytical tool. This design supports a more directed form of exploration than a brush selection on a scatter plot, giving users a clear, readable summary that updates meaningfully as they adjust the slider.
+       </div><br>
+        <div class="key-insight">
+          <span class="key-insight-icon">↗</span>
+          <p>
+            This visualization suggests that during the COVID-19 period, working from home multiple days per week was common across respondents, largely independent of commute length. This high baseline of remote work makes the relationship between commute time and WFH behavior less immediately distinct. However, a more subtle pattern emerges as you drag the slider to filter for longer commuters. The share of respondents expecting to work from home frequently stays high, suggesting that workers who faced the longest commutes have the strongest motivation to preserve remote work arrangements. This trend is less obvious among individuals with shorter commutes, where expected WFH frequency is already relatively high across the board. Together, these patterns suggest that while commute time does not strongly differentiate WFH behavior on its own, it still contributes to shaping future expectations, particularly for those who had the most to gain from avoiding a long daily commute.
+          </p>
+        </div>
+      </div>
+
       </div>
 
     </div>

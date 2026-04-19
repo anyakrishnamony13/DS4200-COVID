@@ -428,72 +428,32 @@ def vis3_productivity_diverging(df):
     return chart
 
 def vis4_commute_wfh_interactive(df):
-    """
-    Scatter (commute time vs WFH days) + linked bar (expected WFH freq).
-    Brush selection on scatter filters the bar chart below, and color encodes expected WFH frequency.
-    """
 
     data = df[
         df["pre_work_pri_time"].notna() &
-        df["wfh_now_days"].notna() &
         df["wfh_freq_exp"].notna()
-        ].copy()
+    ].copy()
     data = data[data["pre_work_pri_time"] <= 120].copy()
-
-    brush = alt.selection_interval(name="brush")
 
     WFH_EXP_ORDER = ["Never", "A few times/year", "A few times/month",
                      "Once/week", "A few times/week", "Every day"]
 
     WFH_EXP_LABELS = {
-        "Never": "Never",
-        "A few times/year": "Few times a year",
+        "Never":             "Never",
+        "A few times/year":  "Few times a year",
         "A few times/month": "Few times a month",
-        "Once/week": "Once a week",
-        "A few times/week": "Few times a week",
-        "Every day": "Every day",
+        "Once/week":         "Once a week",
+        "A few times/week":  "Few times a week",
+        "Every day":         "Every day",
     }
     data["wfh_freq_exp_label"] = data["wfh_freq_exp"].map(WFH_EXP_LABELS).fillna(data["wfh_freq_exp"])
 
-    legend_cfg = {k: v for k, v in _LEGEND_CFG.items()
-                  if k not in ("padding", "rowPadding")}
-
-    wfh_color_scale = alt.Scale(
-        domain=WFH_EXP_ORDER,
-        range=["#4895EF", "#9B72CF", "#F4A261", "#E8C547", "#2EC4B6", "#E63946"],
-    )
-
-    scatter = (
-        alt.Chart(data)
-        .mark_circle(size=60, opacity=0.6, stroke="white", strokeWidth=0.5)
-        .encode(
-            x=alt.X("pre_work_pri_time:Q",
-                    title="Pre-COVID commute time (minutes)",
-                    scale=alt.Scale(domain=[0, 120]),
-                    axis=alt.Axis(labelPadding=6, titlePadding=10)),
-            y=alt.Y("wfh_now_days:Q",
-                    title="WFH days per week (now)",
-                    axis=alt.Axis(labelPadding=6, titlePadding=10)),
-            color=alt.Color(
-                "wfh_freq_exp:N",
-                sort=WFH_EXP_ORDER,
-                scale=wfh_color_scale,
-                legend=alt.Legend(title="Expected WFH frequency", orient="right",
-                                  **legend_cfg),
-            ),
-            tooltip=[
-                alt.Tooltip("pre_work_pri_time:Q", title="Commute time (min)"),
-                alt.Tooltip("wfh_now_days:Q", title="WFH days now"),
-                alt.Tooltip("wfh_freq_exp:N", title="Expected WFH freq"),
-            ],
-        )
-        .add_params(brush)
-        .properties(width=620, height=360)
-    )
+    slider = alt.binding_range(min=0, max=120, step=5, name="Max commute time (minutes):  ")
+    commute_param = alt.param(name="max_commute", bind=slider, value=120)
 
     bars = (
         alt.Chart(data)
-        .mark_bar(cornerRadiusTopLeft=3, cornerRadiusTopRight=3)
+        .mark_bar(cornerRadiusTopLeft=3, cornerRadiusTopRight=3, color=COLOR_DURING)
         .encode(
             x=alt.X("wfh_freq_exp_label:N",
                     sort=[WFH_EXP_LABELS[v] for v in WFH_EXP_ORDER],
@@ -505,26 +465,21 @@ def vis4_commute_wfh_interactive(df):
                         titlePadding=14,
                     )),
             y=alt.Y("count()",
-                    title="Respondents",
+                    title="Number of respondents",
                     axis=alt.Axis(labelPadding=6, titlePadding=10)),
-            color=alt.Color(
-                "wfh_freq_exp:N",
-                sort=WFH_EXP_ORDER,
-                scale=wfh_color_scale,
-                legend=None,
-            ),
             tooltip=[
                 alt.Tooltip("wfh_freq_exp:N", title="Expected freq"),
-                alt.Tooltip("count()", title="Respondents"),
+                alt.Tooltip("count()",        title="Respondents"),
             ],
         )
-        .transform_filter(brush)
-        .properties(width=620, height=200)
+        .transform_filter("datum.pre_work_pri_time <= max_commute")
+        .add_params(commute_param)
+        .properties(width=620, height=300)
     )
 
     chart = (
-        alt.vconcat(scatter, bars, spacing=24)
-        .configure(padding={"top": 20, "right": 200, "bottom": 20, "left": 20})
+        bars
+        .configure(padding={"top": 20, "right": 40, "bottom": 20, "left": 20})
         .configure_view(stroke=BORDER_COLOR, strokeWidth=1)
         .configure_axis(**_AXIS_CFG)
         .configure_legend(**_LEGEND_CFG)
@@ -533,14 +488,14 @@ def vis4_commute_wfh_interactive(df):
             title=alt.TitleParams(
                 text="Commute time vs. WFH adoption: did long commuters embrace remote work more?",
                 subtitle=[
-                    "Select regions in the scatter plot to filter expected work from home behavior in the bar chart below."
+                    "Use the slider to filter respondents by their pre-COVID commute time.",
+                    "The bar chart updates to show expected post-COVID WFH frequency for that group."
                 ],
                 subtitleColor=TEXT_SUBTITLE,
             )
         )
     )
     return chart
-
 
 def _build_vis5_data(df):
     """Compute weighted percentages for the D3 stacked bar chart."""
