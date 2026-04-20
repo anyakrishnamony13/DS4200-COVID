@@ -470,20 +470,19 @@ section { padding: 96px 0; }
   font-size: 15px;
   line-height: 1.8;
   color: var(--text-sub);
-  max-width: 760px;
   margin-bottom: 18px;
 }
 
 .key-insight {
   display: inline-flex;
   align-items: flex-start;
+  font-size: 14px;
   gap: 10px;
   background: #FFFBF4;
   border: 1px solid #F0D9B8;
   border-radius: 8px;
   padding: 12px 16px;
   margin-bottom: 28px;
-  max-width: 760px;
 }
 .key-insight-icon {
   font-size: 14px;
@@ -492,7 +491,7 @@ section { padding: 96px 0; }
   margin-top: 1px;
 }
 .key-insight p {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   color: #7A5020;
   line-height: 1.55;
@@ -546,7 +545,6 @@ section { padding: 96px 0; }
   border-radius: 8px;
   padding: 20px;
   margin-top: 12px;
-  max-width: 760px;
 }
 .design-notes.open { display: block; }
 
